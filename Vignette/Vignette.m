@@ -1,0 +1,126 @@
+%% Vignette for Bayesian Uncertainty Quantification for Column 2 in Table 1 of Costinot and Rodríguez-Clare (2014)
+%% Introduction
+% The relevant structural parameters in Costinot and Rodríguez-Clare (2014)
+% are the sector-level trade elasticities from Caliendo and Parro (2015).
+% Hence, to apply the Bayesian bootstrap procedure, I first find bootstrap
+% estimates for these trade elasticities, and then feed them into the
+% counterfactual predictions of Costinot and Rodríguez-Clare (2014).
+
+% The trade elasticities in Caliendo and Parro (2015) are obtained using
+% triadic regression within sector, which is a special case of GMM. I can
+% hence use the function BB.m directly once I specify the relevant moment
+% function and process the dataframe in such a way that it has the correct
+% format for the function BB.m.
+
+% The function GFT_CRC.m takes as input a vector of trade elasticities, and
+% outputs a vector of country-level gains from trade estimates. It is based
+% on the function Step_09_table_1.m in the replication package of Costinot 
+% and Rodríguez-Clare (2014). 
+
+%% Bayesian bootstrap for Caliendo and Parro (2015)
+% I use the preferred estimates from Caliendo and Parro (2015), which 
+% remove the countries with the lowest 1% share of trade for each sector.
+
+% Load relevant paths
+restoredefaultpath;clear;clc;
+addpath('Data_in/CP','Functions/BB');
+
+% Read in data
+df_super = table2array(readtable('data99.csv'));
+
+% Find vector of sectors
+sect_vec = sort(unique(df_super(:,1)));
+
+% Specify the GMM moment function and initial value
+psi = @(X,theta) (X(1)-X(2)*theta)*X(2);
+theta_init = 0;
+
+% Specify the polyadic order
+I = 3;
+
+% Specify the number of bootstrap draws
+B = 1e5;
+
+% Initialize output arrays
+theta_baseline_super = zeros(length(sect_vec),1);
+theta_mat_bb_super = zeros(B,length(sect_vec));
+
+% There is a parfor-loop in the function BB.m, so you can choose the number 
+% of cores to use here.
+parpool(8); 
+
+% Loop over the various sectors:
+for s=1:length(sect_vec)
+    % Extract sector-specific dataframe
+    sect = sect_vec(s);
+    df = df_super(df_super(:,1)==sect,:);
+
+    % Make sure the dataframe has the correct format for the function BB.m
+    units=1:16;
+    for i = 1:length(df)
+        df(i,20:22) = units(df(i,4:19)==1);
+    end
+    df=[df(:,[2,3,20:22])];  
+
+    % Apply function BB
+    [theta_baseline, theta_mat_bb] = BB(df,psi,I,theta_init,B);    
+    
+    % Store sector-specific results
+    theta_baseline_super(s) = theta_baseline;    
+    theta_mat_bb_super(:,s) = theta_mat_bb;     
+end
+
+% Save output arrays
+save Data_out/CP/CP_B1e5 theta_baseline_super theta_mat_bb_super
+
+%% Counterfactual predictions in Costinot and Rodríguez-Clare (2014)
+% Given a vector of sector-level trade elasticities, we can use the code
+% in the replication package from Costinot and Rodríguez-Clare (2014) to
+% find the gains from trade for countries in column 2 of Table 1, which
+% corresponds to a multi-sector model with no intermediates and perfect
+% competition. 
+
+% Load relevant paths
+restoredefaultpath;clear;clc;
+addpath('Data_in/CRC', 'Data_out/CP','Functions/CRC');
+
+% Read bootstrapped estimates
+load Data_out/CP/CP_B1e5
+
+% Compute baseline gains from trade
+GFT_baseline = GFT_CRC(theta_baseline_super);
+
+% Initialize output arrays
+B = length(theta_mat_bb_super);
+GFT_mat_bb = zeros(B,length(GFT_baseline));
+
+% Push forward the uncertainty in theta to uncertainty in gains from trade
+parfor b = 1:B
+    GFT_mat_bb(b,:) = GFT_CRC(theta_mat_bb_super(b,:));
+    if mod(b,100)==0
+        b/B
+    end
+end
+
+% Save output arrays
+save Data_out/CRC/CRC_B1e5 GFT_baseline GFT_mat_bb
+
+% Load output arrays
+load Data_out/CRC/CRC_B1e5
+
+% Make plot with point estimates and smoothed posteriors
+tiledlayout(6,6);
+titles = ["AUS" "AUT" "BEL" "BRA" "CAN" "CHN" "CZE" "DEU" "DNK" "ESP" "FIN" "FRA" "GBR" "GRC" "HUN" "IDN" "IND" "IRL" "ITA" "JPN" "KOR" "MEX" "NLD" "POL" "PRT" "ROM" "RUS" "SVK" "SVN" "SWE" "TUR" "TWN" "USA" "ROW"];
+for i=1:34
+    GFT_baseline_i = GFT_baseline(i);
+    GFT_mat_bb_i = GFT_mat_bb(:,i);
+    [f_bb, x_bb] = ksdensity(GFT_mat_bb_i);    
+
+    nexttile   
+    xline(GFT_baseline_i, 'LineWidth', 2, 'Color','black');        
+    hold on
+    plot(x_bb, f_bb, 'LineWidth', 2, 'Color','blue', 'LineStyle',':');       
+    title(titles(i),'Fontsize', 16)
+    legend('PE','BB','FontSize',14)
+    hold off 
+end
