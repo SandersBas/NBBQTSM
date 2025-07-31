@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Vignette for Bayesian Uncertainty Quantification for Column 2 in Table 1 of Costinot and Rodr&iacute;guez-Clare (2014)</title>
+<meta name="generator" content="MATLAB 24.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2025-07-31">
+<meta name="DC.source" content="Vignette.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Vignette for Bayesian Uncertainty Quantification for Column 2 in Table 1 of Costinot and Rodr&iacute;guez-Clare (2014)</h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Introduction</a>
+</li>
+<li>
+<a href="#2">Bayesian bootstrap for Caliendo and Parro (2015)</a>
+</li>
+<li>
+<a href="#3">Counterfactual predictions in Costinot and Rodr&iacute;guez-Clare (2014)</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Introduction</h2>
+<p>The relevant structural parameters in Costinot and Rodr&iacute;guez-Clare (2014) are the sector-level trade elasticities from Caliendo and Parro (2015). Hence, to apply the Bayesian bootstrap procedure, I first find bootstrap estimates for these trade elasticities, and then feed them into the counterfactual predictions of Costinot and Rodr&iacute;guez-Clare (2014).</p>
+<p>The trade elasticities in Caliendo and Parro (2015) are obtained using triadic regression within sector, which is a special case of GMM. I can hence use the function BB.m directly once I specify the relevant moment function and process the dataframe in such a way that it has the correct format for the function BB.m.</p>
+<p>The function GFT_CRC.m takes as input a vector of trade elasticities, and outputs a vector of country-level gains from trade estimates. It is based on the function Step_09_table_1.m in the replication package of Costinot and Rodr&iacute;guez-Clare (2014).</p>
+<h2 id="2">Bayesian bootstrap for Caliendo and Parro (2015)</h2>
+<p>I use the preferred estimates from Caliendo and Parro (2015), which remove the countries with the lowest 1% share of trade for each sector.</p>
+<pre class="codeinput">
+<span class="comment">% Load relevant paths</span>
+restoredefaultpath;clear;clc;
+addpath(<span class="string">'Data_in/CP'</span>,<span class="string">'Functions/BB'</span>);
+
+<span class="comment">% Read in data</span>
+df_super = table2array(readtable(<span class="string">'data99.csv'</span>));
+
+<span class="comment">% Find vector of sectors</span>
+sect_vec = sort(unique(df_super(:,1)));
+
+<span class="comment">% Specify the GMM moment function and initial value</span>
+psi = @(X,theta) (X(1)-X(2)*theta)*X(2);
+theta_init = 0;
+
+<span class="comment">% Specify the polyadic order</span>
+I = 3;
+
+<span class="comment">% Specify the number of bootstrap draws</span>
+B = 1e3;
+
+<span class="comment">% Initialize output arrays</span>
+theta_baseline_super = zeros(length(sect_vec),1);
+theta_mat_bb_super = zeros(B,length(sect_vec));
+
+<span class="comment">% There is a parfor-loop in the function BB.m, so you can choose the number</span>
+<span class="comment">% of cores to use here.</span>
+parpool(8);
+
+<span class="comment">% Loop over the various sectors:</span>
+<span class="keyword">for</span> s=1:length(sect_vec)
+    <span class="comment">% Extract sector-specific dataframe</span>
+    sect = sect_vec(s);
+    df = df_super(df_super(:,1)==sect,:);
+
+    <span class="comment">% Make sure the dataframe has the correct format for the function BB.m</span>
+    units=1:16;
+    <span class="keyword">for</span> i = 1:length(df)
+        df(i,20:22) = units(df(i,4:19)==1);
+    <span class="keyword">end</span>
+    df=[df(:,[2,3,20:22])];
+
+    <span class="comment">% Apply function BB</span>
+    [theta_baseline, theta_mat_bb] = BB(df,psi,I,theta_init,B);
+
+    <span class="comment">% Store sector-specific results</span>
+    theta_baseline_super(s) = theta_baseline;
+    theta_mat_bb_super(:,s) = theta_mat_bb;
+<span class="keyword">end</span>
+
+<span class="comment">% Save output arrays</span>
+save <span class="string">Data_out/CP/CP_B1e3</span> <span class="string">theta_baseline_super</span> <span class="string">theta_mat_bb_super</span>
+</pre>
+<pre class="codeoutput">Starting parallel pool (parpool) using the 'Processes' profile ...
+Connected to parallel pool with 8 workers.
+</pre>
+<h2 id="3">Counterfactual predictions in Costinot and Rodr&iacute;guez-Clare (2014)</h2>
+<p>Given a vector of sector-level trade elasticities, we can use the code in the replication package from Costinot and Rodr&iacute;guez-Clare (2014) to find the gains from trade for countries in column 2 of Table 1, which corresponds to a multi-sector model with no intermediates and perfect competition.</p>
+<pre class="codeinput">
+<span class="comment">% Load relevant paths</span>
+<span class="comment">%restoredefaultpath;clear;clc;</span>
+addpath(<span class="string">'Data_in/CRC'</span>, <span class="string">'Data_out/CP'</span>,<span class="string">'Functions/CRC'</span>);
+
+<span class="comment">% Read bootstrapped estimates</span>
+load <span class="string">Data_out/CP/CP_B1e3</span>
+
+<span class="comment">% Compute baseline gains from trade</span>
+GFT_baseline = GFT_CRC(theta_baseline_super);
+
+<span class="comment">% Initialize output arrays</span>
+B = length(theta_mat_bb_super);
+GFT_mat_bb = zeros(B,length(GFT_baseline));
+
+<span class="comment">% Push forward the uncertainty in theta to uncertainty in gains from trade</span>
+<span class="keyword">parfor</span> b = 1:B
+    GFT_mat_bb(b,:) = GFT_CRC(theta_mat_bb_super(b,:));
+    <span class="comment">% if mod(b,100)==0</span>
+    <span class="comment">%     b/B</span>
+    <span class="comment">% end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Save output arrays</span>
+save <span class="string">Data_out/CRC/CRC_B1e3</span> <span class="string">GFT_baseline</span> <span class="string">GFT_mat_bb</span>
+
+<span class="comment">% Load output arrays</span>
+load <span class="string">Data_out/CRC/CRC_B1e3</span>
+
+<span class="comment">% Make plot with point estimates and smoothed posteriors</span>
+fig = figure(<span class="string">'Units'</span>, <span class="string">'normalized'</span>, <span class="string">'OuterPosition'</span>, [0 0 1 1]);
+tiledlayout(6,6,<span class="string">'TileSpacing'</span>,<span class="string">'compact'</span>,<span class="string">'Padding'</span>,<span class="string">'compact'</span>);
+titles = [<span class="string">"AUS"</span> <span class="string">"AUT"</span> <span class="string">"BEL"</span> <span class="string">"BRA"</span> <span class="string">"CAN"</span> <span class="string">"CHN"</span> <span class="string">"CZE"</span> <span class="string">"DEU"</span> <span class="string">"DNK"</span> <span class="string">"ESP"</span> <span class="string">"FIN"</span> <span class="string">"FRA"</span> <span class="string">"GBR"</span> <span class="string">"GRC"</span> <span class="string">"HUN"</span> <span class="keyword">...</span>
+    <span class="string">"IDN"</span> <span class="string">"IND"</span> <span class="string">"IRL"</span> <span class="string">"ITA"</span> <span class="string">"JPN"</span> <span class="string">"KOR"</span> <span class="string">"MEX"</span> <span class="string">"NLD"</span> <span class="string">"POL"</span> <span class="string">"PRT"</span> <span class="string">"ROM"</span> <span class="string">"RUS"</span> <span class="string">"SVK"</span> <span class="string">"SVN"</span> <span class="string">"SWE"</span> <span class="string">"TUR"</span> <span class="string">"TWN"</span> <span class="string">"USA"</span> <span class="string">"ROW"</span>];
+<span class="keyword">for</span> i=1:34
+    GFT_baseline_i = GFT_baseline(i);
+    GFT_mat_bb_i = GFT_mat_bb(:,i);
+    [f_bb, x_bb] = ksdensity(GFT_mat_bb_i);
+
+    nexttile
+    xline(GFT_baseline_i, <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>,<span class="string">'black'</span>);
+    hold <span class="string">on</span>
+    plot(x_bb, f_bb, <span class="string">'LineWidth'</span>, 2, <span class="string">'Color'</span>,<span class="string">'blue'</span>, <span class="string">'LineStyle'</span>,<span class="string">':'</span>);
+    title(titles(i),<span class="string">'Fontsize'</span>, 16)
+    legend(<span class="string">'PE'</span>,<span class="string">'BB'</span>,<span class="string">'FontSize'</span>,14)
+    hold <span class="string">off</span>
+<span class="keyword">end</span>
+</pre>
+<img vspace="5" hspace="5" src="Vignette_01.png" alt=""> <p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Vignette for Bayesian Uncertainty Quantification for Column 2 in Table 1 of Costinot and Rodríguez-Clare (2014)
+%% Introduction
+% The relevant structural parameters in Costinot and Rodríguez-Clare (2014)
+% are the sector-level trade elasticities from Caliendo and Parro (2015).
+% Hence, to apply the Bayesian bootstrap procedure, I first find bootstrap
+% estimates for these trade elasticities, and then feed them into the
+% counterfactual predictions of Costinot and Rodríguez-Clare (2014).
+%
+% The trade elasticities in Caliendo and Parro (2015) are obtained using
+% triadic regression within sector, which is a special case of GMM. I can
+% hence use the function BB.m directly once I specify the relevant moment
+% function and process the dataframe in such a way that it has the correct
+% format for the function BB.m. 
+%
+% The function GFT_CRC.m takes as input a vector of trade elasticities, and
+% outputs a vector of country-level gains from trade estimates. It is based
+% on the function Step_09_table_1.m in the replication package of Costinot 
+% and Rodríguez-Clare (2014). 
+
+%% Bayesian bootstrap for Caliendo and Parro (2015)
+% I use the preferred estimates from Caliendo and Parro (2015), which 
+% remove the countries with the lowest 1% share of trade for each sector.
+
+% Load relevant paths
+restoredefaultpath;clear;clc;
+addpath('Data_in/CP','Functions/BB');
+
+% Read in data
+df_super = table2array(readtable('data99.csv'));
+
+% Find vector of sectors
+sect_vec = sort(unique(df_super(:,1)));
+
+% Specify the GMM moment function and initial value
+psi = @(X,theta) (X(1)-X(2)*theta)*X(2);
+theta_init = 0;
+
+% Specify the polyadic order
+I = 3;
+
+% Specify the number of bootstrap draws
+B = 1e3;
+
+% Initialize output arrays
+theta_baseline_super = zeros(length(sect_vec),1);
+theta_mat_bb_super = zeros(B,length(sect_vec));
+
+% There is a parfor-loop in the function BB.m, so you can choose the number 
+% of cores to use here.
+parpool(8); 
+
+% Loop over the various sectors:
+for s=1:length(sect_vec)
+    % Extract sector-specific dataframe
+    sect = sect_vec(s);
+    df = df_super(df_super(:,1)==sect,:);
+
+    % Make sure the dataframe has the correct format for the function BB.m
+    units=1:16;
+    for i = 1:length(df)
+        df(i,20:22) = units(df(i,4:19)==1);
+    end
+    df=[df(:,[2,3,20:22])];  
+
+    % Apply function BB
+    [theta_baseline, theta_mat_bb] = BB(df,psi,I,theta_init,B);    
+    
+    % Store sector-specific results
+    theta_baseline_super(s) = theta_baseline;    
+    theta_mat_bb_super(:,s) = theta_mat_bb;     
+end
+
+% Save output arrays
+save Data_out/CP/CP_B1e3 theta_baseline_super theta_mat_bb_super
+
+%% Counterfactual predictions in Costinot and Rodríguez-Clare (2014)
+% Given a vector of sector-level trade elasticities, we can use the code
+% in the replication package from Costinot and Rodríguez-Clare (2014) to
+% find the gains from trade for countries in column 2 of Table 1, which
+% corresponds to a multi-sector model with no intermediates and perfect
+% competition. 
+
+% Load relevant paths
+%restoredefaultpath;clear;clc;
+addpath('Data_in/CRC', 'Data_out/CP','Functions/CRC');
+
+% Read bootstrapped estimates
+load Data_out/CP/CP_B1e3
+
+% Compute baseline gains from trade
+GFT_baseline = GFT_CRC(theta_baseline_super);
+
+% Initialize output arrays
+B = length(theta_mat_bb_super);
+GFT_mat_bb = zeros(B,length(GFT_baseline));
+
+% Push forward the uncertainty in theta to uncertainty in gains from trade
+parfor b = 1:B
+    GFT_mat_bb(b,:) = GFT_CRC(theta_mat_bb_super(b,:));
+    % if mod(b,100)==0
+    %     b/B
+    % end
+end
+
+% Save output arrays
+save Data_out/CRC/CRC_B1e3 GFT_baseline GFT_mat_bb
+
+% Load output arrays
+load Data_out/CRC/CRC_B1e3
+
+% Make plot with point estimates and smoothed posteriors
+fig = figure('Units', 'normalized', 'OuterPosition', [0 0 1 1]); 
+tiledlayout(6,6,'TileSpacing','compact','Padding','compact');
+titles = ["AUS" "AUT" "BEL" "BRA" "CAN" "CHN" "CZE" "DEU" "DNK" "ESP" "FIN" "FRA" "GBR" "GRC" "HUN" ...
+    "IDN" "IND" "IRL" "ITA" "JPN" "KOR" "MEX" "NLD" "POL" "PRT" "ROM" "RUS" "SVK" "SVN" "SWE" "TUR" "TWN" "USA" "ROW"];
+for i=1:34
+    GFT_baseline_i = GFT_baseline(i);
+    GFT_mat_bb_i = GFT_mat_bb(:,i);
+    [f_bb, x_bb] = ksdensity(GFT_mat_bb_i);    
+
+    nexttile   
+    xline(GFT_baseline_i, 'LineWidth', 2, 'Color','black');        
+    hold on
+    plot(x_bb, f_bb, 'LineWidth', 2, 'Color','blue', 'LineStyle',':');       
+    title(titles(i),'Fontsize', 16)
+    legend('PE','BB','FontSize',14)
+    hold off 
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>
